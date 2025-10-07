@@ -4,38 +4,49 @@ import metrics.PerformanceTracker;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MaxHeapTest {
+public class HeapSortTest {
 
     @Test
-    void testInsertAndExtract() {
+    public void testSortSmallArray() {
+        int[] arr = {4, 10, 3, 5, 1};
         PerformanceTracker tracker = new PerformanceTracker();
-        MaxHeap heap = new MaxHeap(10, tracker);
+        HeapSort sorter = new HeapSort(tracker);
+        sorter.sort(arr);
 
-        heap.insert(10);
-        heap.insert(30);
-        heap.insert(20);
-
-        assertEquals(30, heap.extractMax());
-        assertEquals(20, heap.extractMax());
-        assertEquals(10, heap.extractMax());
+        assertArrayEquals(new int[]{1, 3, 4, 5, 10}, arr,
+                "HeapSort should correctly sort a small array");
     }
 
     @Test
-    void testIncreaseKey() {
+    public void testSortAlreadySorted() {
+        int[] arr = {1, 2, 3, 4, 5};
         PerformanceTracker tracker = new PerformanceTracker();
-        MaxHeap heap = new MaxHeap(10, tracker);
-        heap.insert(5);
-        heap.insert(10);
-        heap.increaseKey(0, 15);
-        assertEquals(15, heap.getMax());
+        HeapSort sorter = new HeapSort(tracker);
+        sorter.sort(arr);
+
+        assertArrayEquals(new int[]{1, 2, 3, 4, 5}, arr,
+                "HeapSort should leave already sorted arrays unchanged");
     }
 
     @Test
-    void testIsEmpty() {
+    public void testSortReverseOrder() {
+        int[] arr = {9, 7, 5, 3, 1};
         PerformanceTracker tracker = new PerformanceTracker();
-        MaxHeap heap = new MaxHeap(5, tracker);
-        assertTrue(heap.isEmpty());
-        heap.insert(1);
-        assertFalse(heap.isEmpty());
+        HeapSort sorter = new HeapSort(tracker);
+        sorter.sort(arr);
+
+        assertArrayEquals(new int[]{1, 3, 5, 7, 9}, arr,
+                "HeapSort should correctly sort a reverse-ordered array");
+    }
+
+    @Test
+    public void testSortWithDuplicates() {
+        int[] arr = {4, 10, 4, 5, 10, 1};
+        PerformanceTracker tracker = new PerformanceTracker();
+        HeapSort sorter = new HeapSort(tracker);
+        sorter.sort(arr);
+
+        assertArrayEquals(new int[]{1, 4, 4, 5, 10, 10}, arr,
+                "HeapSort should correctly handle duplicate elements");
     }
 }
